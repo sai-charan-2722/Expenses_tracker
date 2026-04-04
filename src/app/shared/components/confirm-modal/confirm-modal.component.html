@@ -1,0 +1,21 @@
+<div class="modal-overlay" [class.open]="true">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header">
+      <span class="modal-title">{{ title }}</span>
+      <button class="btn-icon" (click)="onCancel()"><span class="material-icons-round">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-icon" [class]="confirmationClass">
+        <span class="material-icons-round">{{ icon }}</span>
+      </div>
+      <div class="confirm-text">
+        <h3>{{ message }}</h3>
+        <p *ngIf="description">{{ description }}</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="onCancel()">Cancel</button>
+      <button class="btn btn-danger" (click)="onConfirm()">Confirm</button>
+    </div>
+  </div>
+</div>

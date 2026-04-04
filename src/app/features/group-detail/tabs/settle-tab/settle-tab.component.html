@@ -1,0 +1,29 @@
+<div *ngIf="settlements.length === 0" class="empty-state">
+  <div class="empty-state-icon"><span class="material-icons-round">done_all</span></div>
+  <h3>All settled up!</h3>
+  <p>Everyone in this group is even. No payments needed.</p>
+</div>
+
+<div *ngIf="settlements.length > 0">
+  <div class="card" style="margin-bottom:14px;">
+    <div class="card-header">
+      <span class="card-title"><span class="material-icons-round">account_balance</span> Settlement Suggestions</span>
+      <span class="chip chip-primary">{{settlements.length}} payment{{settlements.length !== 1 ? 's' : ''}}</span>
+    </div>
+    <div class="card-body">
+      <div class="settlement-item" *ngFor="let s of settlements">
+        <div class="settlement-arrow" style="flex:1;min-width:0;align-items:center;display:flex;gap:8px;">
+          <div class="avatar avatar-sm" [class]="avatarColor(s.from)">{{getInitials(s.from)}}</div>
+          <span class="settlement-from">{{getUserName(s.from)}}</span>
+          <span class="material-icons-round arrow-icon">arrow_forward</span>
+          <span class="settlement-to">{{getUserName(s.to)}}</span>
+          <div class="avatar avatar-sm" [class]="avatarColor(s.to)">{{getInitials(s.to)}}</div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div class="settlement-amt">{{formatAmount(s.amount)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-muted);text-align:center;">Transactions are minimised to the fewest possible payments.</p>
+</div>

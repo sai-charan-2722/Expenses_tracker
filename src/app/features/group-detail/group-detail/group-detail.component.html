@@ -1,0 +1,59 @@
+<div class="page">
+  <div class="detail-header">
+    <div class="detail-header-top">
+      <div class="detail-group-icon" [class]="'gi-' + colorIdx" style="font-size:28px;width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;">
+        {{group?.emoji}}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div class="detail-group-name">{{group?.name}}</div>
+        <div class="detail-group-sub">
+          {{members.length}} member{{members.length !== 1 ? 's' : ''}} · Created {{formatDate(group?.createdAt)}}
+        </div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card-label">Total Spent</div>
+        <div class="stat-card-value">{{formatAmount(totalExpenses)}}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label">Expenses</div>
+        <div class="stat-card-value">{{expenses.length}}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label">Per Person</div>
+        <div class="stat-card-value">{{formatAmount(avgPerPerson)}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab" [class.active]="isTabActive('expenses')" (click)="switchTab('expenses')">Expenses</button>
+    <button class="tab" [class.active]="isTabActive('balances')" (click)="switchTab('balances')">Balances</button>
+    <button class="tab" [class.active]="isTabActive('settle')" (click)="switchTab('settle')">Settle Up</button>
+    <button class="tab" [class.active]="isTabActive('members')" (click)="switchTab('members')">Members</button>
+  </div>
+
+  <div id="tab-content">
+    <ng-container [ngSwitch]="currentTab">
+      <ng-container *ngSwitchCase="'expenses'">
+        <app-expenses-tab [groupId]="group?.id" [expenses]="expenses" (openAddExpense)="onAddExpense()"
+                          (deleteExpense)="onDeleteExpense($event)"></app-expenses-tab>
+      </ng-container>
+      <ng-container *ngSwitchCase="'balances'">
+        <app-balances-tab [balances]="balances"></app-balances-tab>
+      </ng-container>
+      <ng-container *ngSwitchCase="'settle'">
+        <app-settle-tab [settlements]="settlements"></app-settle-tab>
+      </ng-container>
+      <ng-container *ngSwitchCase="'members'">
+        <app-members-tab [groupId]="group?.id" [members]="members" [balances]="balances"
+                         (openAddMember)="onAddMember()" (removeMember)="onRemoveMemberModal($event)"></app-members-tab>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<app-add-expense-modal *ngIf="showAddExpenseModal" [groupId]="group?.id" (close)="closeAddExpenseModal()" (submit)="handleAddExpense()"></app-add-expense-modal>
+<app-add-member-modal *ngIf="showAddMemberModal" [groupId]="group?.id" (close)="closeAddMemberModal()" (submit)="handleAddMember()"></app-add-member-modal>
+<app-confirm-modal *ngIf="showConfirmModal" [message]="confirmMessage" [type]="confirmType" (confirm)="onConfirm()" (cancel)="closeConfirmModal()"></app-confirm-modal>

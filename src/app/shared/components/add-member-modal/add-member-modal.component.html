@@ -1,0 +1,27 @@
+<div class="modal-overlay" [class.open]="true">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header">
+      <span class="modal-title">Add New Member</span>
+      <button class="btn-icon" (click)="onClose()"><span class="material-icons-round">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:8px">
+        <input class="form-input" [(ngModel)]="memberInputText" placeholder="Enter member name" maxlength="50"
+               (keydown.enter)="addMember(); $event.preventDefault()" name="memberName">
+        <button class="btn btn-primary" (click)="addMember()">Add</button>
+      </div>
+      <span class="form-error" *ngIf="showNameError">Please enter a valid member name</span>
+      <div style="margin-top:8px">
+        <div *ngFor="let name of newMembers; let i = index" style="display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--border-light)">
+          <div class="avatar av-0 avatar-sm">{{getUserInitials(name)}}</div>
+          <span style="flex:1;font-size:14px;font-weight:500">{{name}}</span>
+          <span style="cursor:pointer;color:var(--text-muted);font-size:16px" (click)="removeMember(i)">×</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="onClose()">Cancel</button>
+      <button class="btn btn-primary" [disabled]="newMembers.length === 0" (click)="onSubmit()">Add Selected</button>
+    </div>
+  </div>
+</div>

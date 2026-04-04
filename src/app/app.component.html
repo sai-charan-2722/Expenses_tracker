@@ -1,0 +1,9 @@
+<app-nav
+  (createGroup)="onCreateGroup()"
+  (addMember)="onAddMember()"
+  (addExpense)="onAddExpense()"
+/>
+<div class="main-content">
+  <router-outlet />
+</div>
+<app-snackbar />

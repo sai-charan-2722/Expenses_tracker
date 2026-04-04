@@ -1,0 +1,16 @@
+<div *ngIf="balances.length === 0" class="empty-state">
+  <div class="empty-state-icon"><span class="material-icons-round">balance</span></div>
+  <h3>No members yet</h3>
+  <p>Add members to see balance summaries.</p>
+</div>
+
+<div *ngIf="balances.length > 0">
+  <div class="balance-item" *ngFor="let b of balances" [ngClass]="getBalanceClass(b.amount)">
+    <div class="avatar avatar-sm" [class]="avatarColor(b.userId)">{{getInitials(b.userId)}}</div>
+    <div class="balance-info">
+      <div class="balance-name">{{getUserName(b.userId)}}</div>
+      <div class="balance-desc">{{getBalanceDescription(b.amount)}}</div>
+    </div>
+    <div class="balance-amount">{{getBalanceAmountPrefix(b.amount)}}{{formatAmount(b.amount)}}</div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="modal-overlay" [class.open]="true">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Add Expense</span>
+      <button class="btn-icon" (click)="onClose()"><span class="material-icons-round">close</span></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Title <span>*</span></label>
+        <input class="form-input" [(ngModel)]="titleVal" placeholder="e.g. Dinner, Cab ride…" maxlength="100" name="title">
+        <span class="form-error" *ngIf="showTitleError">Please enter a title for the expense</span>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Amount (&#8377;) <span>*</span></label>
+          <input class="form-input" type="number" [(ngModel)]="amountVal" placeholder="0.00" min="0.01" name="amount">
+          <span class="form-error" *ngIf="showAmountError">Please enter a valid amount greater than 0</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-input" [(ngModel)]="categoryVal" name="category">
+            <option *ngFor="let cat of categories" [value]="cat.id">{{cat.label}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Paid By <span>*</span></label>
+          <select class="form-input" [(ngModel)]="paidByVal" name="paidBy">
+            <option value="" disabled>Select member</option>
+            <option *ngFor="let m of members" [value]="m.id">{{m.name}}</option>
+          </select>
+          <span class="form-error" *ngIf="showPayerError">Please select who paid</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-input" type="date" [(ngModel)]="dateVal" name="date">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Split Between <span>*</span></label>
+        <div class="checkbox-group">
+          <label *ngFor="let m of members" class="checkbox-chip" [class.selected]="splitSelected.includes(m.id)"
+                 (click)="toggleSplit(m.id)">
+            <input type="checkbox" [checked]="splitSelected.includes(m.id)">
+            {{m.name}}
+          </label>
+        </div>
+        <span class="form-error" *ngIf="showSplitError">Select at least one member to split with</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="onClose()">Cancel</button>
+      <button class="btn btn-primary" (click)="onSubmit()">Add Expense</button>
+    </div>
+  </div>
+</div>

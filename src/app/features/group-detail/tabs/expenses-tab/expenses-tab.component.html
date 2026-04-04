@@ -1,0 +1,33 @@
+<div *ngIf="expenses.length === 0" class="empty-state">
+  <div class="empty-state-icon"><span class="material-icons-round">receipt_long</span></div>
+  <h3>No expenses yet</h3>
+  <p>Add the first expense to start tracking what everyone owes.</p>
+  <button class="btn btn-primary" (click)="onAddExpense()">
+    <span class="material-icons-round">add</span> Add Expense
+  </button>
+</div>
+
+<div *ngIf="expenses.length > 0" class="card">
+  <div class="card-body" style="padding:0 20px">
+    <div class="expense-item" *ngFor="let exp of expenses | sortByDate:'date':true">
+      <div class="expense-icon">{{getCatEmoji(exp.category)}}</div>
+      <div class="expense-info">
+        <div class="expense-title">{{exp.title}}</div>
+        <div class="expense-meta">
+          <span>Paid by <strong style="color:var(--text-primary)">{{getUserName(exp.paidBy)}}</strong></span>
+          <span style="color:var(--border)">·</span>
+          <span>{{formatDate(exp.date)}}</span>
+          <span style="color:var(--border)">·</span>
+          <span>{{exp.splitBetween.length}} person{{exp.splitBetween.length !== 1 ? 's' : ''}}</span>
+        </div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="expense-amount">{{formatAmount(exp.amount)}}</div>
+        <div class="expense-per-person">{{formatAmount(exp.amount / exp.splitBetween.length)}}/person</div>
+      </div>
+      <button class="btn-icon danger" (click)="onDeleteExpense(exp.id); $event.stopPropagation()">
+        <span class="material-icons-round" style="font-size:17px">delete_outline</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div *ngIf="members.length === 0" class="empty-state">
+  <div class="empty-state-icon"><span class="material-icons-round">person</span></div>
+  <h3>No members</h3>
+  <p>Add people to this group to start splitting expenses.</p>
+  <button class="btn btn-primary" (click)="onAddMember()">
+    <span class="material-icons-round">person_add</span> Add Member
+  </button>
+</div>
+
+<div *ngIf="members.length > 0" class="card">
+  <div class="card-header">
+    <span class="card-title"><span class="material-icons-round">group</span> Members</span>
+    <button class="btn btn-outline btn-sm" (click)="onAddMember()">
+      <span class="material-icons-round">person_add</span> Add
+    </button>
+  </div>
+  <div class="card-body" style="padding:8px 20px">
+    <div class="member-row" *ngFor="let member of members">
+      <div class="avatar" [class]="getAvatarColor(member.id)">{{getUserInitials(member.id)}}</div>
+      <div class="member-name">{{getUserName(member.id)}}</div>
+      <span style="font-size:12px;color:var(--text-muted);margin-right:8px">{{getPaidCount(member.id)}} paid</span>
+      <span [ngClass]="getBalanceChipClass(getBalanceAmount(member.id))">{{getBalanceChipText(getBalanceAmount(member.id))}}</span>
+      <button class="btn-icon danger" (click)="onRemoveMember(member.id)" title="Remove member">
+        <span class="material-icons-round" style="font-size:17px">person_remove</span>
+      </button>
+    </div>
+  </div>
+</div>

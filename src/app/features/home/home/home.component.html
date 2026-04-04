@@ -1,0 +1,66 @@
+<div class="page">
+  <div class="page-heading">
+    <div>
+      <h1>My Groups</h1>
+      <p *ngIf="groups.length > 0" style="font-size:14px;color:var(--text-secondary);margin-top:2px;">
+        {{groups.length}} group{{groups.length !== 1 ? 's' : ''}}
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="groups.length === 0" class="empty-state">
+    <div class="empty-state-icon"><span class="material-icons-round">group</span></div>
+    <h3>No groups yet</h3>
+    <p>Create a group to start splitting expenses with friends, family, or colleagues.</p>
+    <button class="btn btn-primary" (click)="openCreateGroupModal()">
+      <span class="material-icons-round">add</span> Create your first group
+    </button>
+  </div>
+
+  <div *ngIf="groups.length > 0" class="groups-grid">
+    <div class="group-card" *ngFor="let group of groups" (click)="navigateToGroup(group.id)">
+      <div class="group-card-top">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div class="group-icon" [class]="'gi-' + (group.id.charCodeAt(0) % 6)">{{group.emoji}}</div>
+          <div>
+            <div class="group-name">{{group.name}}</div>
+            <div class="group-meta">
+              {{group.memberIds.length}} member{{group.memberIds.length !== 1 ? 's' : ''}} ·
+              {{getExpenseCount(group.id)}} expense{{getExpenseCount(group.id) !== 1 ? 's' : ''}}
+            </div>
+          </div>
+        </div>
+        <button class="btn-icon danger" (click)="openDeleteGroupModal($event, group.id)">
+          <span class="material-icons-round" style="font-size:17px">delete_outline</span>
+        </button>
+      </div>
+      <div class="group-stats">
+        <div class="group-stat">
+          <div class="group-stat-label">Total</div>
+          <div class="group-stat-value">{{formatAmount(getTotalAmount(group.id))}}</div>
+        </div>
+        <div class="group-stat">
+          <div class="group-stat-label">Per Person</div>
+          <div class="group-stat-value">
+            {{group.memberIds.length ? formatAmount(getTotalAmount(group.id) / group.memberIds.length) : '₹0.00'}}
+          </div>
+        </div>
+      </div>
+      <div class="group-members">
+        <div class="member-avatars" style="display:flex">
+          <ng-container *ngFor="let memberId of group.memberIds.slice(0,4); let i = index">
+            <div class="avatar avatar-sm" [class]="avatarColor(memberId)" style="border:2px solid white">
+              {{getUserInitials(memberId)}}
+            </div>
+          </ng-container>
+        </div>
+        <span class="member-count-text" [style.marginLeft.px]="getMemberCountTextOffset(group.memberIds.length)">
+          {{group.memberIds.length > 4 ? '+' + (group.memberIds.length - 4) + ' more' : getMemberNames(group.memberIds)}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-create-group-modal *ngIf="showCreateGroupModal" (close)="closeCreateGroupModal()" (submit)="handleCreateGroup($event)"></app-create-group-modal>
+<app-confirm-modal *ngIf="showConfirmModal" [message]="confirmMessage" (confirm)="onConfirmDelete()" (cancel)="closeConfirmModal()"></app-confirm-modal>
