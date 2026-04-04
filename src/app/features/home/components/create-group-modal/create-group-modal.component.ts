@@ -64,8 +64,18 @@ export class CreateGroupModalComponent {
     };
 
     this.storageService.saveGroup(group);
+    this.resetForm();
     this.submit.emit(group);
     this.close.emit();
+  }
+
+  private resetForm() {
+    this.grpName = '';
+    this.grpEmoji = '✈️';
+    this.memberInputText = '';
+    this.newMembers = [];
+    this.submitted = false;
+    this.showMemberError = false;
   }
 
   getUserInitials(name: string): string {

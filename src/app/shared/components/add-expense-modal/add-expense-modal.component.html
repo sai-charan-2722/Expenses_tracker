@@ -40,9 +40,8 @@
       <div class="form-group">
         <label class="form-label">Split Between <span>*</span></label>
         <div class="checkbox-group">
-          <label *ngFor="let m of members" class="checkbox-chip" [class.selected]="splitSelected.includes(m.id)"
-                 (click)="toggleSplit(m.id)">
-            <input type="checkbox" [checked]="splitSelected.includes(m.id)">
+          <label *ngFor="let m of members" class="checkbox-chip" [class.selected]="splitSelected.includes(m.id)">
+            <input type="checkbox" [checked]="splitSelected.includes(m.id)" (click)="toggleSplit(m.id)">
             {{m.name}}
           </label>
         </div>

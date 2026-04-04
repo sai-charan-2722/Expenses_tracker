@@ -31,16 +31,23 @@ export class BalanceService {
     group.memberIds.forEach((uid: string) => { balMap[uid] = 0; });
 
     expenses.forEach((exp: any) => {
+      if (!group.memberIds.includes(exp.paidBy)) {
+        balMap[exp.paidBy] = 0;
+      }
+      for (const uid of exp.splitBetween) {
+        if (!(uid in balMap)) {
+          balMap[uid] = 0;
+        }
+      }
+
       const share = Math.round((exp.amount / exp.splitBetween.length) * 100) / 100;
-      const remainder = Math.round((exp.amount - share * exp.splitBetween.length) * 100) / 100;
 
       // Payer gets credit
       balMap[exp.paidBy] = (balMap[exp.paidBy] || 0) + exp.amount;
 
-      // Each person in split owes their share
-      exp.splitBetween.forEach((uid: string, i: number) => {
-        const thisShare = i === 0 ? share + remainder : share;
-        balMap[uid] = (balMap[uid] || 0) - thisShare;
+      // Each person in split owes their equal share
+      exp.splitBetween.forEach((uid: string) => {
+        balMap[uid] = (balMap[uid] || 0) - share;
       });
     });
 

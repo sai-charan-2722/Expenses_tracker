@@ -54,8 +54,13 @@ export class HomeComponent {
   }
 
   handleCreateGroup(group: any) {
+    for (const memberId of group.memberIds) {
+      const user = this.storageService.getUser(memberId);
+      if (user) {
+        this.storageService.saveUser(user);
+      }
+    }
     if (!this.storageService.getGroup(group.id)) {
-      this.storageService.saveUser(group._creators?.[0]);
       this.storageService.saveGroup(group);
     }
     this.showCreateGroupModal = false;
@@ -77,6 +82,7 @@ export class HomeComponent {
       this.pendingDeleteGroupId = '';
       this.loadGroups();
       this.snackbarService.show('Group deleted', 'success');
+      this.closeConfirmModal();
     }
   }
 

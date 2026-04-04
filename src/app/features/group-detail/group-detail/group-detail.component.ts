@@ -171,7 +171,6 @@ export class GroupDetailComponent implements OnInit {
     if (this.pendingDeleteExpenseId) {
       this.storageService.deleteExpense(this.pendingDeleteExpenseId);
       this.pendingDeleteExpenseId = '';
-      this.showConfirmModal = false;
       this.snackbarService.show('Expense deleted', 'success');
       if (this.group) this.loadGroup(this.group.id);
     } else if (this.pendingRemoveUserId) {
@@ -180,11 +179,11 @@ export class GroupDetailComponent implements OnInit {
         group.memberIds = group.memberIds.filter((id: string) => id !== this.pendingRemoveUserId);
         this.storageService.saveGroup(group);
         this.pendingRemoveUserId = '';
-        this.showConfirmModal = false;
         this.snackbarService.show('Member removed', 'success');
         this.loadGroup(this.group.id);
       }
     }
+    this.closeConfirmModal();
   }
 
   closeConfirmModal() {

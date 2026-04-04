@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StorageService } from '../../../core/services/storage.service';
@@ -10,7 +10,7 @@ import { StorageService } from '../../../core/services/storage.service';
   templateUrl: './add-expense-modal.component.html',
   styleUrl: './add-expense-modal.component.scss'
 })
-export class AddExpenseModalComponent {
+export class AddExpenseModalComponent implements OnChanges {
   @Input() groupId = '';
   @Input() initialPayer = '';
   @Output() close = new EventEmitter<void>();
@@ -41,12 +41,30 @@ export class AddExpenseModalComponent {
 
   constructor(private storageService: StorageService) {}
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['groupId']) {
+      this.initForm();
+    }
+  }
+
   ngOnInit() {
+    this.initForm();
+  }
+
+  private initForm() {
     const group = this.storageService.getGroup(this.groupId);
     if (group) {
+      const today = new Date().toISOString().split('T')[0];
+      this.dateVal = today;
       this.members = group.memberIds.map((id: string) => this.storageService.getUser(id)).filter(Boolean);
       this.splitSelected = this.members.map((m: any) => m.id);
-      if (this.members.length > 0) this.paidByVal = this.members[0].id;
+      if (this.members.length > 0) {
+        if (this.initialPayer && this.members.some(m => m.id === this.initialPayer)) {
+          this.paidByVal = this.initialPayer;
+        } else {
+          this.paidByVal = this.members[0].id;
+        }
+      }
     }
   }
 
@@ -80,12 +98,27 @@ export class AddExpenseModalComponent {
     };
 
     this.storageService.saveExpense(expense);
+    this.resetForm();
     this.submit.emit();
     this.close.emit();
   }
 
   onClose() {
+    this.resetForm();
     this.close.emit();
+  }
+
+  private resetForm() {
+    this.titleVal = '';
+    this.amountVal = '';
+    this.categoryVal = 'food';
+    this.paidByVal = '';
+    this.dateVal = '';
+    this.splitSelected = [];
+    this.showTitleError = false;
+    this.showAmountError = false;
+    this.showPayerError = false;
+    this.showSplitError = false;
   }
 
   private generateId(): string {

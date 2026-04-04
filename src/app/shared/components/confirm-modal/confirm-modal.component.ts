@@ -23,7 +23,6 @@ export class ConfirmModalComponent {
 
   onConfirm(): void {
     this.confirm.emit();
-    this.cancel.emit(); // Close the modal after confirming
   }
 
   onCancel(): void {

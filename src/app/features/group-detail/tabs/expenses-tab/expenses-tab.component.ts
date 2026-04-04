@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { StorageService } from '../../../../core/services/storage.service';
 import { UiUtilsService } from '../../../../core/services/ui-utils.service';
-import { ModalService } from '../../../../shared/services/modal.service';
 import { CommonModule } from '@angular/common';
 import { SortByDatePipe } from '../../../../shared/pipes/sort-by-date.pipe';
 
@@ -21,8 +20,7 @@ export class ExpensesTabComponent {
 
   constructor(
     private storageService: StorageService,
-    private uiUtils: UiUtilsService,
-    private modalService: ModalService
+    private uiUtils: UiUtilsService
   ) {}
 
   // Helper methods for UI
