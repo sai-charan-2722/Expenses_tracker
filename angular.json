@@ -19,6 +19,7 @@
           "options": {
             "outputPath": "dist/Expenses_tracker",
             "baseHref": "/Expenses_tracker/",
+            "deployUrl": "/Expenses_tracker/",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
