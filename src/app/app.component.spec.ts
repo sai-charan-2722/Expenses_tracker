@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'splitsmart-angular' title`, () => {
+  it(`should have the 'Expenses_tracker' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('splitsmart-angular');
+    expect(app.title).toEqual('Expenses_tracker');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, splitsmart-angular');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, Expenses_tracker');
   });
 });

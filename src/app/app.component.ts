@@ -12,7 +12,7 @@ import { NavStateService } from './core/services/nav-state.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'splitsmart-angular';
+  title = 'Expenses_tracker';
 
   constructor(private navState: NavStateService) {}
 
