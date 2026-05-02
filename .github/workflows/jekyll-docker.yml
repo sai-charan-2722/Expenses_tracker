@@ -1,4 +1,4 @@
-name: Deploy static portfolio to GitHub Pages
+name: Build and Deploy Angular to GitHub Pages
 
 on:
   push:
@@ -16,15 +16,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22  
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular app
+        run: |
+          npm run build -- --configuration production --base-href /Expenses_tracker/ --deploy-url /Expenses_tracker/
 
       - name: Upload static files
         uses: actions/upload-pages-artifact@v3
