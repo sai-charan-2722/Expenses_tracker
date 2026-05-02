@@ -1,0 +1,63 @@
+.detail-header {
+  padding: 16px;
+
+  .detail-header-top {
+    flex-wrap: wrap;
+    gap: 12px;
+
+    > div {
+      min-width: 0;
+    }
+
+    .detail-group-icon {
+      width: 48px;
+      height: 48px;
+      font-size: 24px;
+    }
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.tabs {
+  flex-wrap: wrap;
+
+  .tab {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
+/* Ensure tab content doesn't overflow */
+#tab-content {
+  overflow-x: hidden;
+}
+
+/* Responsive adjustments for cards and lists */
+.expense-item, .balance-item, .settlement-item, .member-row {
+  padding: 10px;
+  flex-wrap: wrap;
+
+  > * {
+    min-width: 0;
+  }
+
+  .expense-info, .balance-info, .settlement-arrow, .member-name {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .expense-amount, .balance-amount, .settlement-amt {
+    white-space: normal;
+  }
+}
+
+/* Avatar adjustments */
+.member-avatars .avatar {
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
+}
